@@ -33,33 +33,24 @@ public class JettyCamelTest extends BaseJettyTest {
 
 				onException(IllegalStateException.class)
 					.handled(true)
-					.maximumRedeliveries(3)
-					.log(LoggingLevel.INFO, "processing exception")
-				.end();
+					.maximumRedeliveries(2)
+					.to("log:camel.sample?level=ERROR&showCaughtException=true&showStackTrace=true&multiline=true")
+					.log(LoggingLevel.INFO, "processing exception");
 
 				from("jetty://http://0.0.0.0:{{port}}/myservice")
-					
-					.log(LoggingLevel.TRACE,"£ to direct error")
-					
+					.log(LoggingLevel.INFO,"£ to direct error")
 					.to("direct:error")
-					
-					.transform().constant("Bye World").to("mock:result")
-					
-				.end();
+					.transform().constant("Bye World").to("mock:result");
 
 				AtomicInteger atomicInteger = new AtomicInteger(0);
 
 				from("direct:error")
-				
 					.log(LoggingLevel.INFO, "£ throwing Exception")
-					
 					.process(exchange -> {
-						if (atomicInteger.incrementAndGet() <= 3) {
+						if (atomicInteger.incrementAndGet() < 3) {
 							throw new IllegalStateException();
 						}
-					})
-				
-				.end();
+					});
 			}
 		};
 	}
