@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jetty.version>9.3.0.v20150612</jetty.version>
-    <camel.version>2.16.1</camel.version>
+    <camel.version>2.16.2</camel.version>
   </properties>
 
   <dependencies>
@@ -30,6 +30,11 @@
        <artifactId>camel-jetty</artifactId>
        <version>${camel.version}</version>
     </dependency>
+   	<dependency>
+	  <groupId>org.apache.camel</groupId>
+	  <artifactId>camel-jackson</artifactId>
+	  <version>${camel.version}</version>
+	</dependency>
     <!-- logging -->
     <dependency>
       <groupId>org.slf4j</groupId>

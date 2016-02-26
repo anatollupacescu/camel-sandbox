@@ -15,6 +15,7 @@ public class MainApp {
         main.enableHangupSupport();
         main.addRouteBuilder(new FileProcessingRouteBuilder());
         main.addRouteBuilder(new StickyLoadBalancerSedaRouteBuilder());
+
         main.run(args);
     }
 }

@@ -23,9 +23,9 @@ public class TestExceptionMessage extends CamelTestSupport {
 	
 	@Test
 	public void testRoute2() throws InterruptedException {
-		Exchange ex = sendMessage(DIRECT_INPUT, 0);
-		String body = ex.getIn().getBody(String.class);
-		System.out.println(body);
+		sendMessage(DIRECT_INPUT, 0);
+		sendMessage(DIRECT_INPUT, 1);
+		sendMessage(DIRECT_INPUT, 2);
 	}
 
 	@Override
@@ -38,27 +38,32 @@ public class TestExceptionMessage extends CamelTestSupport {
 				.process(ex -> {
 					System.out.println(ex.getIn().getBody());
 				});
-				
+
 				onException(IOException.class)
 				.handled(true)
 				.process(ex -> {
 					System.out.println(ex.getIn().getBody());
 				});
-				
+
 				onException(SocketException.class)
-				.maximumRedeliveries(2)
 				.handled(true)
 				.process(ex -> {
 					System.out.println(counter.get());
 				});	
-				
+
 				from(DIRECT_INPUT)
 					.routeId("testRoute")
+					.to("direct:other")
+					.end();
+
+				from("direct:other")
+					.errorHandler(noErrorHandler())
+					.loadBalance().circuitBreaker(2, 1000L, Exception.class)
 					.process( ex -> { 
 						counter.incrementAndGet();
 						throw new ConnectException();
 					})
-					.end();
+				.end();
 			}
 		};
 	}
