@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+  <mapping wildcard="false"> 
+    <class-a>camel.model.ModelA</class-a>
+    <class-b>camel.model.ModelB</class-b>   
+      <field>
+        <a>company</a>
+        <b>identifier</b>
+      </field>
+  </mapping>  
+
+</mappings> 

@@ -51,6 +51,11 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.camel</groupId>
+    	<artifactId>camel-dozer</artifactId>
+    	<version>${camel.version}</version>
+    </dependency>
     <!-- testing -->
     <dependency>
       <groupId>org.apache.camel</groupId>
