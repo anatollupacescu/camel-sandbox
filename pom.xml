@@ -4,12 +4,12 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>camel.sample</groupId>
+  <groupId>my.github</groupId>
   <artifactId>camel-sandbox</artifactId>
+  <name>camel-sandbox</name>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>A Camel Route</name>
   <url>http://www.myorganization.org</url>
 
   <properties>
