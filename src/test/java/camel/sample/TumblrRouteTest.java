@@ -9,12 +9,14 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.camel.util.FileUtil;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class TumblrRouteTest extends CamelTestSupport {
 
-    public static final String TUMBLR_BLOG_NAME = "beautieshunter";
+    public static final String TUMBLR_BLOG_NAME = "nudefree74";
+    public static final String LOCATION = "/home/anatol/Desktop/tumblr2/" + TUMBLR_BLOG_NAME;
 
     @Test
     public void mainTest() throws InterruptedException {
@@ -48,11 +51,11 @@ public class TumblrRouteTest extends CamelTestSupport {
                         .setHeader("continue", constant(Boolean.TRUE))
                         .setBody(constant(new HashSet<String>()))
                         .to("direct:fetch")
-                        .process(exchange -> {
-                            Set lines = exchange.getIn().getBody(Set.class);
-                            Path file = Paths.get("/home/anatol/Desktop/" + TUMBLR_BLOG_NAME);
-                            Files.write(file, lines, Charset.forName("UTF-8"));
-                        })
+                        .split(body())
+                            .log("Saving link ${body}")
+                            .transform().exchange(this::fetchImage)
+                            .to("file://" + LOCATION)
+                        .end()
                 .log("Done with " + TUMBLR_BLOG_NAME);
 
                 from("direct:fetch")
@@ -63,6 +66,23 @@ public class TumblrRouteTest extends CamelTestSupport {
                         .choice()
                             .when(header("continue").isEqualTo(Boolean.TRUE))
                             .to("direct:fetch");
+            }
+
+            private Object fetchImage(Exchange exchange) {
+                String fileLocation = exchange.getIn().getBody(String.class);
+                ByteArrayOutputStream baos;
+                try {
+                    URL urlObject = new URL(fileLocation);
+                    BufferedImage image = ImageIO.read(urlObject);
+                    baos = new ByteArrayOutputStream();
+                    String filename = FileUtil.stripPath(fileLocation);
+                    String ext = FileUtil.onlyExt(fileLocation);
+                    ImageIO.write(image, ext, baos);
+                    exchange.getIn().setHeader(Exchange.FILE_NAME, filename);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return baos;
             }
 
             private Set<String> callRemoteService(Exchange exchange) {
