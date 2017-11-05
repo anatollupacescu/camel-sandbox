@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jetty.version>9.3.0.v20150612</jetty.version>
-    <camel.version>2.18.0</camel.version>
+    <camel.version>2.20.0</camel.version>
   </properties>
 
   <dependencies>
@@ -35,6 +35,11 @@
 	  <artifactId>camel-jackson</artifactId>
 	  <version>${camel.version}</version>
 	</dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-headersmap</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
     <!-- logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -56,6 +61,11 @@
     	<artifactId>camel-dozer</artifactId>
     	<version>${camel.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.tumblr</groupId>
+      <artifactId>jumblr</artifactId>
+      <version>0.0.11</version>
+    </dependency>
     <!-- testing -->
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -66,7 +76,7 @@
   </dependencies>
 
   <build>
-    <defaultGoal>install</defaultGoal>
+    <defaultGoal>package</defaultGoal>
 
     <plugins>
       <plugin>
