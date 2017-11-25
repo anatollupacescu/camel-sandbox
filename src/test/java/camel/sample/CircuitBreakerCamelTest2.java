@@ -9,15 +9,13 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.RejectedExecutionException;
 
-import static org.hamcrest.CoreMatchers.isA;
-
 public class CircuitBreakerCamelTest2 extends CamelTestSupport {
 
 	@Test
 	public void testRoute1() throws InterruptedException {
 		Exchange exc = sendMessage("direct:input", "lol");
 		assertNotNull(exc.getException());
-		assertThat(exc.getException(), isA(Exception.class));
+		assertTrue(exc.getException() instanceof Exception);
 	}
 
 	@Test

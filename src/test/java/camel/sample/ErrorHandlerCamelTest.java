@@ -11,6 +11,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ErrorHandlerCamelTest extends CamelTestSupport {
@@ -24,6 +25,7 @@ public class ErrorHandlerCamelTest extends CamelTestSupport {
 	int redeliveryCount = 3;
 
 	@Test
+    @Ignore
 	public void testRoute3() throws InterruptedException {
 
 		final int m_count = 5;

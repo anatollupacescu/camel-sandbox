@@ -1,5 +1,8 @@
-package camel.sample;
+package camel;
 
+import camel.sample.FileProcessingRouteBuilder;
+import camel.sample.MockHttpRouteBuilder;
+import camel.sample.StickyLoadBalancerSedaRouteBuilder;
 import org.apache.camel.main.Main;
 
 public class MainApp {
